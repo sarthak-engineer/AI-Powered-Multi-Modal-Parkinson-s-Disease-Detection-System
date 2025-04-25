@@ -48,6 +48,7 @@ The multimodal approach achieved:
  ```
  git clone https://github.com/EbrahimMassrie963/parkinsons-disease-detection.git 
  cd parkinsons-disease-detection
+ cd parkinson project demo with api
 
 ```
 
