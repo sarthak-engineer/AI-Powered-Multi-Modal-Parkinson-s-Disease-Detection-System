@@ -4,7 +4,7 @@ call venv\Scripts\activate
 
 REM Navigate to the backend directory and start the backend server
 cd app
-start cmd /k "uvicorn app:app --reload"
+uvicorn app:app --reload
 
 REM Navigate back to the main directory and start the frontend
 cd ..

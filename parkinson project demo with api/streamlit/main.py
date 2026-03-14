@@ -66,9 +66,9 @@ def encode_image(image_path):
         return base64.b64encode(img_file.read()).decode()
 
 # Paths for assets
-parkinson_image_path = "C:\\Users\\Ebrahim\\Downloads\\parkinson project demo\\streamlit\\assets\\images\\parkinson.jpg"
-audio_icon_path = "C:\\Users\\Ebrahim\\Downloads\\parkinson project demo\\streamlit\\assets\\images\\audio_icon.png"
-image_icon_path = "C:\\Users\\Ebrahim\\Downloads\\parkinson project demo\\streamlit\\assets\\images\\image_icon.png"
+parkinson_image_path = "streamlit/assets/images/parkinson.jpg"
+audio_icon_path = "streamlit/assets/images/audio_icon.png"
+image_icon_path = "streamlit/assets/images/image_icon.png"
 
 # Load images
 parkinson_image = Image.open(parkinson_image_path)
@@ -77,7 +77,7 @@ image_icon_base64 = encode_image(image_icon_path)
 
 # Sidebar with information
 with st.sidebar:
-    st.image(parkinson_image, use_container_width=True)
+    st.image(parkinson_image, width='stretch')
     st.markdown("### About Parkinson's Disease")
     st.write(
         "Parkinson's disease is a progressive nervous system disorder that affects movement. "
@@ -132,7 +132,7 @@ if st.button("Predict"):
             "image": ("image.png", image_file.getvalue(), "image/png"),
         }
         try:
-            response = requests.post("http://127.0.0.1:8000/predict", files=files)
+            response = requests.post("http://localhost:8000/pro", files=files)
             if response.status_code == 200:
                 result = response.json()
                 if result['prediction'] == "Positive":
@@ -155,12 +155,10 @@ if st.button("Predict"):
                 st.audio(audio_file)
                 # Display image
                 image = Image.open(io.BytesIO(image_file.getvalue()))
-                st.image(image, caption="Uploaded Drawing", use_container_width=True)
+                st.image(image, caption="Uploaded Drawing", width='stretch')
             else:
                 st.error(f"Error: {response.json()['detail']}")
         except Exception as e:
             st.error(f"Request failed: {e}")
     else: 
         st.error("Please upload both audio and image files.")
-
-
