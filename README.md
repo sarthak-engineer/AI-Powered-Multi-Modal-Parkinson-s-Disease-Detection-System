@@ -1,75 +1,115 @@
-Parkinson’s Disease Detection System
+Multi-Modal AI System for Parkinson’s Disease Detection
+
+An AI-powered healthcare diagnostic support system designed for early Parkinson’s Disease detection using multi-modal analysis of voice recordings and drawing patterns. The system combines audio-based vocal analysis and image-based motor pattern recognition to improve prediction reliability and diagnostic confidence.
+
 Overview
+This project implements a Multi-Modal Machine Learning Pipeline that analyzes:
 
-This project is an AI-based Parkinson’s Disease Detection System that analyzes voice recordings and drawing patterns to identify early signs of Parkinson’s disease. The system uses machine learning techniques to detect abnormalities in speech and motor control that are commonly associated with Parkinson’s disease.
+Voice recordings for vocal tremors and phonation irregularities
+Spiral/Wave drawings for motor-control abnormalities and tremor patterns
 
-The goal of this project is to demonstrate how Artificial Intelligence can support early healthcare diagnosis by analyzing behavioral and motor symptoms through digital data.
+The extracted features are fused and processed using a Random Forest ensemble model to predict the likelihood of Parkinson’s Disease.
 
-Features
+Key Features
+Multi-modal AI-based Parkinson’s detection
+Voice analysis using MFCC feature extraction
+Drawing analysis using HOG-based image feature extraction
+Random Forest ensemble classification
+FastAPI backend with REST APIs
+React.js frontend with responsive UI
+Real-time prediction workflow
+PCA-based dimensionality reduction
+SMOTE-based dataset balancing
 
-Voice analysis for detecting speech abnormalities
-
-Drawing pattern analysis to identify tremors and motor control issues
-
-Machine learning based prediction model
-
-Early detection support for Parkinson’s disease
-
-Technologies Used
-
+Technology Stack
+Backend
 Python
+FastAPI
+Uvicorn
 
-Machine Learning
+Frontend
+React.js
+Vite
+Tailwind CSS
 
+Machine Learning & Data Processing
 Scikit-learn
-
+Librosa
+OpenCV
+Scikit-Image
 NumPy
-
 Pandas
 
-Matplotlib
+System Workflow
 
-How It Works
+User uploads:
 
-Voice recordings and drawing inputs are collected from the user.
+.wav voice recording
+Spiral/Wave drawing image
+Backend preprocesses the inputs:
+MFCC extraction from audio
+HOG feature extraction from images
+Features are combined into a unified feature vector
+Random Forest model performs prediction
+Prediction result is returned to the frontend UI
+Machine Learning Pipeline
+Voice Analysis
+MFCC feature extraction using Librosa
+Detection of vocal instability and tremors
+Drawing Analysis
+HOG feature extraction using OpenCV and Scikit-Image
+Analysis of handwriting tremors and motor irregularities
 
-Important features are extracted from the voice signals and drawing patterns.
+Classification
+Random Forest ensemble model
+Hyperparameter optimization using GridSearchCV
+Dataset balancing using SMOTE
+PCA for dimensionality reduction
 
-The processed data is used as input for a machine learning model.
+Project Structure
+project/
+│
+├── app/                  # FastAPI backend
+├── frontend/             # React frontend
+├── streamlit/            # Streamlit demo UI
+├── models/               # Trained ML models
+├── notebooks/            # Training and experimentation
+├── requirements.txt
+└── README.md
 
-The trained model analyzes the patterns and predicts the likelihood of Parkinson’s disease.
+API Endpoints
+Endpoint	Description
+/pro	Multi-modal prediction
+/voice	Voice-only prediction
+/drawing	Drawing-only prediction
 
-Installation
+Model Performance
+Achieved 94%+ prediction accuracy
+Evaluated using:
+Accuracy
+Precision
+Recall
+F1-Score
+Confusion Matrix
 
-Clone the repository:
+Running the Project
 
-git clone https://github.com/your-username/parkinsons-detection.git
+Backend
+cd app
+uvicorn app:app --reload --port 8000
 
-Navigate to the project folder:
-
-cd parkinsons-detection
-
-Install required dependencies:
-
-pip install -r requirements.txt
-Usage
-
-Run the main program:
-
-python main.py
-
-Provide the required voice input or drawing input and the system will analyze the data and generate a prediction.
-
-Project Objective
-
-The objective of this project is to build a system that can assist in the early detection of Parkinson’s disease using AI techniques, helping in faster diagnosis and better healthcare support.
+Frontend
+cd frontend
+npm install
+npm run dev
 
 Future Improvements
+Deep learning-based multi-modal models
+Real-time speech analysis
+Cloud deployment and scalability
+Clinical dataset expansion
+Explainable AI integration
+Mobile application support
+Conclusion
 
-Improve model accuracy using larger datasets
-
-Add deep learning based voice analysis
-
-Build a web-based interface for easier access
-
-Integrate real-time voice and drawing input
+This project demonstrates the integration of Artificial Intelligence, Machine Learning, Computer Vision, Audio Signal Processing, and Full-Stack Development into a unified healthcare diagnostic support system for early Parkinson’s Disease detection.

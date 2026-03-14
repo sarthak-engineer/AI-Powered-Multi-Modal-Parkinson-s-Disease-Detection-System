@@ -43,19 +43,32 @@ except Exception as e:
 
 @app.post("/pro")
 async def predict_parkinsons(audio: UploadFile = File(...), image: UploadFile = File(...)):
+    audio_path = None
+    image_path = None
     try:
         # Save uploaded files temporarily
         uploads_dir = os.path.join(BASE_DIR, "temp")
         os.makedirs(uploads_dir, exist_ok=True)
 
-        audio_path = os.path.join(uploads_dir, audio.filename)
-        image_path = os.path.join(uploads_dir, image.filename)
+        # Use safe filenames
+        audio_name = audio.filename if audio.filename else "temp_audio.wav"
+        image_name = image.filename if image.filename else "temp_image.png"
+        
+        audio_path = os.path.join(uploads_dir, audio_name)
+        image_path = os.path.join(uploads_dir, image_name)
+
+        # Read content once and write
+        audio_content = await audio.read()
+        image_content = await image.read()
+
+        if not audio_content or not image_content:
+            raise ValueError("One or both uploaded files are empty.")
 
         with open(audio_path, "wb") as audio_file:
-            audio_file.write(await audio.read())
+            audio_file.write(audio_content)
 
         with open(image_path, "wb") as image_file:
-            image_file.write(await image.read())
+            image_file.write(image_content)
 
         # Extract features
         voice_features = extract_voice_features(audio_path)
@@ -66,11 +79,8 @@ async def predict_parkinsons(audio: UploadFile = File(...), image: UploadFile = 
 
         # Make prediction
         prediction = loaded_model.predict(model_input)[0]
-        confidence = max(loaded_model.predict_proba(model_input)[0])
-
-        # Cleanup temporary files
-        os.remove(audio_path)
-        os.remove(image_path)
+        # Use float() to ensure it's JSON serializable
+        confidence = float(max(loaded_model.predict_proba(model_input)[0]))
 
         # Return prediction
         return JSONResponse(content={
@@ -79,7 +89,15 @@ async def predict_parkinsons(audio: UploadFile = File(...), image: UploadFile = 
         })
 
     except Exception as e:
-        raise HTTPException(status_code=500, detail=f"Prediction error: {e}")
+        print(f"Prediction Error: {str(e)}")
+        raise HTTPException(status_code=500, detail=f"Prediction error: {str(e)}")
+    
+    finally:
+        # Cleanup temporary files
+        if audio_path and os.path.exists(audio_path):
+            os.remove(audio_path)
+        if image_path and os.path.exists(image_path):
+            os.remove(image_path)
 
 @app.post("/voice")
 async def predict_voice(audio: UploadFile = File(...)):
